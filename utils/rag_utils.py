@@ -46,3 +46,13 @@ def generate_answer_gemini(query, context, history=[]):
     model = genai.GenerativeModel("gemini-2.5-flash")
     response = model.generate_content(prompt)
     return response.text
+
+
+def retrieve_context_with_scores(query, k=3):
+    q_emb = embedder.encode(query).tolist()
+    results = collection.query(query_embeddings=[q_emb], n_results=k)
+    
+    chunks = results["documents"][0]
+    scores = results["distances"][0]  # similitud
+    
+    return chunks, scores
