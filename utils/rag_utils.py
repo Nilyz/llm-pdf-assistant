@@ -2,17 +2,14 @@ import chromadb
 from sentence_transformers import SentenceTransformer
 import google.generativeai as genai
 import streamlit as st
-import google.generativeai as genai
 
+# Configure Gemini
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"].strip())
 
-# Take the API key from Streamlit secrets and initialize Gemini client
-client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"].strip())
-
-# Initialize ChromaDB client
+# Initialize Chroma
 chroma_client = chromadb.PersistentClient(path="./vector_store")
 collection = chroma_client.get_or_create_collection("pdf_docs")
 
-# Initialize local embedder
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
 
@@ -36,7 +33,7 @@ def retrieve_context(query, k=3):
 
 # Generate answer using gemini-2.5-flash model
 def generate_answer_gemini(query, context, history=[]):
-
+    
     # Build prompt with neutral labels
     history_text = ""
     for turn in history:
@@ -46,10 +43,6 @@ def generate_answer_gemini(query, context, history=[]):
 
     prompt = f"{history_text}\nContext:\n{context}\n\nQuestion: {query}"
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
-    )
-
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    response = model.generate_content(prompt)
     return response.text
-
