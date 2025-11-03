@@ -2,7 +2,7 @@ import chromadb
 from sentence_transformers import SentenceTransformer
 import google.generativeai as genai
 import streamlit as st
-from google import genai
+import google.generativeai as genai
 
 
 # Take the API key from Streamlit secrets and initialize Gemini client
