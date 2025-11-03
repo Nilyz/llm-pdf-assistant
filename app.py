@@ -2,8 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 from utils.pdf_utils import extract_text_from_pdf
 from utils.text_utils import chunk_text
-from utils.rag_utils import create_embeddings_and_store
-
+from utils.rag_utils import create_embeddings_and_store, retrieve_context, generate_answer_gemini
 
 
 # Gemini API Key configuration
@@ -26,3 +25,18 @@ if uploaded_file:
         create_embeddings_and_store(chunks, uploaded_file.name)
     st.success("PDF processed and ready to use.")
 
+
+# User query input
+query = st.chat_input("Make a query about the PDF...")
+
+if query:
+    with st.spinner("Searching for answer..."):
+        context = retrieve_context(query)
+        answer = generate_answer_gemini(
+            query, context, history=st.session_state["history"]
+        )
+        st.session_state["history"].append({"role": "user", "content": query})
+        st.session_state["history"].append({"role": "assistant", "content": answer})
+
+for msg in st.session_state["history"]:
+    st.chat_message(msg["role"]).write(msg["content"])
