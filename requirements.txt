@@ -1,5 +1,4 @@
-streamlit
-openai
 chromadb
+sentence-transformers
+google-generativeai
 PyPDF2
-tiktoken
