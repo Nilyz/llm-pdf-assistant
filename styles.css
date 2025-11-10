@@ -1,3 +1,7 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+
 /* ---------------------------Main App Container--------------------------- */
 [data-testid="stAppViewContainer"] {
     background-color: #07020e !important; 
@@ -27,19 +31,26 @@
 /* ---------------------------Header--------------------------- */
 .app-title {
     color: #ffffff !important;
-    font-family: 'Arial', sans-serif;
-    font-size: 52px;
-    font-weight: bold;
+    font-family: "Quantico", sans-serif !important;
+    font-size: 48px !important;
+    font-weight:700;
     text-align: center;
     margin-bottom: 10px;
 }
-
+.logo-img{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    filter: invert(1);
+    
+}
 .app-subtitle {
     color: #ffffff;
-    font-family: 'Arial', sans-serif;
-    font-size: 32px;
+    font-family: "Quantico", sans-serif !important;
+    font-size: 22px !important;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 30px !important;
+    margin-top: 30px;
 }
 
 /* Hide default Streamlit header */
@@ -52,6 +63,8 @@
     width: 60% !important;
     margin: 0 auto !important;
     display: block !important;
+    font-family: "Quantico", sans-serif !important;
+
 }
 
 /* Uploader container background and border */
@@ -60,6 +73,7 @@
     border-radius: 10px;
     padding: 10px;
     border: 2px solid #682993;
+
 }
 
 /* Button inside uploader */
@@ -68,6 +82,7 @@
     color: #682993 !important;
     font-weight: bold;
     font-size: 16px;
+
 }
 
 /* Placeholder text inside uploader */
@@ -131,13 +146,14 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    font-family: 'Arial', sans-serif;
 }
 
 .chat-container h3 {
     text-align: left;
     color: #ffffff;
     font-size: 18px;
+    font-family: "Quantico", sans-serif !important;
+
 }
 
 .chat-box {
@@ -198,6 +214,7 @@
 [data-testid="stBottomBlockContainer"] {
     width: 60%;
     max-width: 100%;
+    
 }
 
 /* Textarea input */
@@ -205,7 +222,6 @@
     background-color: transparent !important;
     color: rgb(18, 3, 22) !important;
     font-size: 16px !important;
-    font-family: 'Arial', sans-serif !important;
     border: none !important;
     outline: none !important;
     resize: none !important;
@@ -226,6 +242,8 @@
 [data-testid="stAlert"] {
     width: 60%;
     margin: auto;
+    font-family: "Quantico", sans-serif !important;
+
 }
 
 [data-testid="stAlert"] [data-testid="stAlertContainer"] {

@@ -1,5 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
+import base64
+import os
 from utils.pdf_utils import extract_text_from_pdf
 from utils.text_utils import chunk_text
 from utils.rag_utils import (
@@ -7,6 +9,21 @@ from utils.rag_utils import (
     generate_answer_gemini,
     retrieve_context
 )
+
+
+# --- Función para codificar la imagen a Base64 ---
+def get_base64_image(image_path):
+    """Convierte una imagen local a una cadena Base64 para incrustarla en HTML/CSS."""
+    try:
+        if not os.path.exists(image_path):
+            # No usa st.error aquí para evitar duplicar el mensaje si el logo es opcional
+            return None
+            
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+    except Exception:
+        # Falla silenciosamente si hay un error de lectura, mostrando solo el título
+        return None
 
 # --- CSS ---
 def local_css(file_name):
@@ -18,8 +35,46 @@ local_css("styles.css")
 # --- Configure Gemini API ---
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-st.markdown('<h1 class="app-title">AI Chatbot PDFs assistant</h1>', unsafe_allow_html=True)
+# --- CONFIGURACIÓN DE PÁGINA (TÍTULO Y FAVICON) ---
+st.set_page_config(
+    page_title="Botzy PDF",
+    page_icon="images/botzy_logo.png", 
+    layout="wide"
+)
+
+# --------------------------
+# ENCABEZADO CON LOGO Y TÍTULO (Usando Base64 para la compatibilidad)
+# --------------------------
+LOGO_PATH = "images/botzy_logo.png"
+logo_base64 = get_base64_image(LOGO_PATH)
+
+if logo_base64:
+    logo_src = f"data:image/png;base64,{logo_base64}"
+    
+    st.markdown(
+        f"""
+        <div style="
+            display: flex; 
+            align-items: center; 
+            justify-content: center; /* Centrado horizontal */
+            gap: 5px;
+            padding-top: 10px;
+        ">
+            <img class="logo-img"
+                src="{logo_src}" 
+                alt="Botzy Logo" 
+            >
+            <h1 class="app-title" style="margin: 0; font-size: 2.5rem; text-align: center;">Botzy PDF</h1>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+else:
+    # Si la imagen falla (no se encuentra o error), muestra solo el título
+    st.markdown("<h1>Botzy PDF</h1>", unsafe_allow_html=True)
+
 st.markdown('<p class="app-subtitle">Upload a PDF and ask questions based on its content.</p>', unsafe_allow_html=True)
+
 
 # --- Initialize chat history in session state ---
 if "history" not in st.session_state:
