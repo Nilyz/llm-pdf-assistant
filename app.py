@@ -35,16 +35,14 @@ local_css("styles.css")
 # --- Configure Gemini API ---
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-# --- CONFIGURACIÓN DE PÁGINA (TÍTULO Y FAVICON) ---
+# --- PAGE SETUP (TITLE AND FAVICON) ---
 st.set_page_config(
     page_title="Botzy PDF",
     page_icon="images/botzy_logo.png", 
     layout="wide"
 )
 
-# --------------------------
-# ENCABEZADO CON LOGO Y TÍTULO (Usando Base64 para la compatibilidad)
-# --------------------------
+# --------------------------HEADER WITH LOGO AND TITLE (Using Base64 for compatibility)--------------------------
 LOGO_PATH = "images/botzy_logo.png"
 logo_base64 = get_base64_image(LOGO_PATH)
 
@@ -70,7 +68,6 @@ if logo_base64:
         unsafe_allow_html=True
     )
 else:
-    # Si la imagen falla (no se encuentra o error), muestra solo el título
     st.markdown("<h1>Botzy PDF</h1>", unsafe_allow_html=True)
 
 st.markdown('<p class="app-subtitle">Upload a PDF and ask questions based on its content.</p>', unsafe_allow_html=True)
